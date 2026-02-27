@@ -1,0 +1,12 @@
+{
+  "name": "anxiety-30days",
+  "version": "1.0.0",
+  "description": "幽谷与丰筵 - 30天焦虑操练计划",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Open index.html in your browser'"
+  },
+  "keywords": ["anxiety", "faith", "christian", "30days", "spiritual"],
+  "author": "执笔人",
+  "license": "MIT"
+}

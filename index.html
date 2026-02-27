@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>幽谷与丰筵 - 30天焦虑操练计划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            display: flex;
+            overflow-x: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            gap: 8px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-btn {
+            flex: 0 0 auto;
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .day-card {
+            padding: 25px 20px;
+            display: none;
+        }
+        
+        .day-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .day-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .day-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .day-title {
+            flex: 1;
+        }
+        
+        .day-title h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .step-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: #667eea;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        
+        .verse-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            font-style: italic;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .quote-box {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .exercise-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2e7d32;
+            line-height: 1.7;
+        }
+        
+        .prayer-box {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6a1b9a;
+            line-height: 1.7;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-btn-arrow {
+            padding: 10px 25px;
+            border: none;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn-arrow:active {
+            transform: scale(0.95);
+        }
+        
+        .nav-btn-arrow:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .christ-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        
+        .christ-info h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .christ-steps {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        
+        .christ-step {
+            flex: 1;
+        }
+        
+        .christ-step .letter {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .christ-step .desc {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 幽谷与丰筵</h1>
+            <p>30天焦虑操练计划</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 3.33%"></div>
+        </div>
+        
+        <div class="christ-info">
+            <h3>🙏 CHRIST 六步秘诀</h3>
+            <div class="christ-steps">
+                <div class="christ-step">
+                    <span class="letter">C</span>
+                    <span class="desc">思想<br>感受</span>
+                </div>
+                <div class="christ-step">
+                    <span class="letter">H</span>
+                    <span class="desc">他<br>知道</span>
+                </div>
+                <div class="christ-step">
+                    <span class="letter">R</span>
+                    <span class="desc">记住<br>应许</span>
+                </div>
+                <div class="christ-step">
+                    <span class="letter">I</span>
+                    <span class="desc">找到<br>焦点</span>
+                </div>
+                <div class="christ-step">
+                    <span class="letter">S</span>
+                    <span class="desc">保持<br>参与</span>
+                </div>
+                <div class="christ-step">
+                    <span class="letter">T</span>
+                    <span class="desc">交流</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav" id="navContainer">
+            <!-- Day buttons will be inserted here -->
+        </div>
+        
+        <div id="dayCards">
+            <!-- Day cards will be inserted here -->
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn-arrow" id="prevBtn" onclick="changeDay(-1)">← 上一天</button>
+            <button class="nav-btn-arrow" id="nextBtn" onclick="changeDay(1)">下一天 →</button>
+        </div>
+    </div>
+    
+    <script>
+        const daysData = [
+            {
+                day: 1,
+                step: "简介与破冰",
+                verse: "诗篇 23:4 \"我虽然行过死荫的幽谷，也不怕遭害，因为你与我同在。\"",
+                quote: "焦虑并不要紧，焦虑对你产生影响，焦虑正在工作。一旦你知道它是如何在你身上工作的，你看待它的视角和眼光就会截然不同。",
+                exercise: "今天写下你最大的焦虑，然后对神说：\"主啊，你知道这一切。\"",
+                prayer: "主啊，求你让我在焦虑中看见你的同在"
+            },
+            {
+                day: 2,
+                step: "破碎的意义",
+                verse: "哥林多后书 12:9 \"我的恩典够你用的，因为我的能力是在人的软弱上显得完全。\"",
+                quote: "神让我们被焦虑破碎，神自有他的目的，这个目的就是帮助我们抓住基督、以他为我们力量的源泉。",
+                exercise: "回想一次你被焦虑击垮的经历，思考神可能通过这个经历要教导你什么。",
+                prayer: "主啊，愿你在我的软弱上显出你的刚强"
+            },
+            {
+                day: 3,
+                step: "C-思想感受",
+                verse: "诗篇 34:18 \"耶和华靠近伤心的人，拯救灵性痛悔的人。\"",
+                quote: "我们将感受视作属灵的良药。焦虑是苦涩的，对你却有益处。",
+                exercise: "今天当你感到焦虑时，停下来观察你的感受：身体有哪些反应？心跳？呼吸？手脚？",
+                prayer: "主啊，谢谢你让我感受到情绪，求你帮助我学习处理这些感受"
+            },
+            {
+                day: 4,
+                step: "C-思想感受",
+                verse: "诗篇 139:23-24 \"神啊，求你鉴察我，知道我的心思；试炼我，知道我的意念。\"",
+                quote: "察看焦虑时我们经历的感受，这些感受可以是属灵的良药。",
+                exercise: "写下一件让你焦虑的事，描述它带给你的感受。不要评判这些感受，只是观察。",
+                prayer: "主啊，鉴察我的心思意念，让我真实地面对自己的感受"
+            },
+            {
+                day: 5,
+                step: "H-他知道",
+                verse: "希伯来书 4:15 \"因我们的大祭司并非不能体恤我们的软弱。他也曾凡事受过试探，与我们一样。\"",
+                quote: "基督完全知道你此刻的感受，因着你的焦虑，你与他更亲近。",
+                exercise: "今天当你感到焦虑时，提醒自己：\"他知道。\"他完全明白我的感受。",
+                prayer: "主啊，谢谢你完全理解我的感受，谢谢你与我同受苦难"
+            },
+            {
+                day: 6,
+                step: "H-他知道",
+                verse: "马太福音 11:28 \"凡劳苦担重担的人，可以到我这里来，我就使你们得安息。\"",
+                quote: "神知道我们的焦虑，思想CHRIST六步秘诀中的H一步。",
+                exercise: "找一个安静的地方，对神说：\"主啊，你知道这一切，求你来背负。\"然后安息片刻。",
+                prayer: "主啊，我把重担交托给你，求你赐我安息"
+            },
+            {
+                day: 7,
+                step: "R-记住应许",
+                verse: "诗篇 56:3 \"我惧怕的时候要倚靠你。我倚靠神，我要赞美他的话。我倚靠神，必不惧怕。\"",
+                quote: "要记得神的应许，我们需要使用语言，回想圣经中神的应许。",
+                exercise: "写下三句神给你的应许（例如：我必不撇下你、我与你同在、我必帮助你）。",
+                prayer: "主啊，你的应许是我坚固的磐石，求你让我记住"
+            },
+            {
+                day: 8,
+                step: "R-记住应许",
+                verse: "以赛亚书 41:10 \"你不要害怕，因为我与你同在；不要惊惶，因为我是你的神。我必坚固你，我必帮助你。\"",
+                quote: "记住神的应许。要记得神的应许，我们需要使用语言。",
+                exercise: "背诵一句圣经应许，今天默念10次以上。",
+                prayer: "主啊，你的话安定在天，求你让这些应许深印在我心中"
+            },
+            {
+                day: 9,
+                step: "R-记住应许",
+                verse: "腓立比书 4:6-7 \"应当一无挂虑，只要凡事藉着祷告、祈求和感谢，将你们所要的告诉神。神所赐出人意外的平安，必在基督耶稣里保守你们的心怀意念。\"",
+                quote: "不论你在哪里，神已经决定将你带到最安全的地方。没有什么能使你与神隔绝。",
+                exercise: "今天为一件让你焦虑的事祷告，将担忧告诉神。",
+                prayer: "主啊，我把我所忧虑的交托给你，求你赐出人意外的平安"
+            },
+            {
+                day: 10,
+                step: "I-找到焦点",
+                verse: "马太福音 6:34 \"所以，不要为明天忧虑，因为明天自有明天的忧虑；一天的难处一天当就够了。\"",
+                quote: "深呼吸，开始享受神赐给你的周围世界，找到一个专注点，欣赏一下小细节吧！",
+                exercise: "今天专注一件小事：看一朵花、听一只鸟、感受一次呼吸。只专注当下。",
+                prayer: "主啊，谢谢你赐给我当下的恩典，让我学会数算今天"
+            },
+            {
+                day: 11,
+                step: "I-找到焦点",
+                verse: "诗篇 19:1 \"诸天述说神的荣耀，穹苍传扬他手所做的。\"",
+                quote: "当我们确定一个焦点，这个步骤看似与语言无关，但我们生活的每一个部分都在回响神的声音。",
+                exercise: "今天花5分钟观察大自然，在造物中看见神的作为。",
+                prayer: "主啊，你的创造述说你的荣耀，愿我在万物中看见你"
+            },
+            {
+                day: 12,
+                step: "S-保持参与",
+                verse: "使徒行传 17:28 \"我们生活、动作、存留，都在乎他。\"",
+                quote: "保持专注，继续与你周围的世界同在。神在这里，你活在他里面。",
+                exercise: "即使感到焦虑，也继续做你该做的事：工作、与人交谈、吃饭、休息。",
+                prayer: "主啊，无论环境如何，求你让我活在你里面"
+            },
+            {
+                day: 13,
+                step: "S-保持参与",
+                verse: "歌罗西书 3:23 \"无论做什么，都要从心里做，像是给主做的，不是给人做的。\"",
+                quote: "保持参与。焦虑的时候，我们很难集中注意力。冏公喜欢我们分心。",
+                exercise: "今天做一件小事（洗碗、整理、写信），全心全意去做，像是为主做的。",
+                prayer: "主啊，愿我做的每一件事都荣耀你的名"
+            },
+            {
+                day: 14,
+                step: "T-交流",
+                verse: "雅各书 5:16 \"所以你们要彼此认罪，互相代求，使你们可以得医治。\"",
+                quote: "继续交流，专注于你周围的人，而不只是你自己。",
+                exercise: "今天向一位信任的人分享你的焦虑，或者为他们祷告。",
+                prayer: "主啊，求你赐给我勇气，让我愿意敞开心扉与人分享"
+            },
+            {
+                day: 15,
+                step: "T-交流",
+                verse: "约翰福音 13:34 \"我赐给你们一条新命令，乃是叫你们彼此相爱；我怎样爱你们，你们也要怎样相爱。\"",
+                quote: "我们使用语言与他人连接，将焦点从自己身上移开。焦虑是个黑洞：将我们吸入自我中心的漩涡。",
+                exercise: "今天主动关心一个人的需要，为他做点什么。",
+                prayer: "主啊，求你让我学会爱人如己，从自我中心走出来"
+            },
+            {
+                day: 16,
+                step: "综合操练",
+                verse: "哥林多后书 4:8-9 \"我们四面受敌，却不被困住；心里作难，却不至失望；遭逼迫，却不被丢弃；打倒了，却不至灭亡。\"",
+                quote: "神可以使用焦虑来塑造你的灵性，超越你的所求所想，只要你坚定地与他相交。",
+                exercise: "今天完整使用CHRIST六步来处理一个焦虑：C-观察感受，H-他知道，R-记住应许，I-找到焦点，S-保持参与，T-交流。",
+                prayer: "主啊，求你让我在焦虑中与你同行，经历你的大能"
+            },
+            {
+                day: 17,
+                step: "反复操练",
+                verse: "罗马书 8:28 \"我们晓得万事都互相效力，叫爱神的人得益处。\"",
+                quote: "CHRIST六步秘诀的每一步都使用语言，每一步都通往平安。",
+                exercise: "今天为三件让你焦虑的事分别应用CHRIST六步。",
+                prayer: "主啊，谢谢你让万事互相效力，求你让我从中得益"
+            },
+            {
+                day: 18,
+                step: "信心的微步",
+                verse: "马太福音 17:20 \"你们若有信心像一粒芥菜种，就是对这座山说：你从这边挪到那边，它也必挪去。\"",
+                quote: "信心的微步，同时我们可以应用CHRIST六步秘诀来前行。",
+                exercise: "今天迈出一个小小的信心步伐：做一件你害怕的事（哪怕只是打个电话）。",
+                prayer: "主啊，求你赐我信心的勇气，像芥菜种一样"
+            },
+            {
+                day: 19,
+                step: "信心 vs 恐惧",
+                verse: "诗篇 56:3 \"我惧怕的时候要倚靠你。我倚靠神，我要赞美他的话。\"",
+                quote: "恐惧先于信心，这是个圣经观念。恐惧与信心更像是亲戚，而非敌人。",
+                exercise: "回想一件你害怕却凭信心去做的事，写下当时神如何带领。",
+                prayer: "主啊，谢谢你在我恐惧中赐下信心"
+            },
+            {
+                day: 20,
+                step: "祷告的力量",
+                verse: "以弗所书 6:18 \"靠着圣灵，随时多方祷告祈求，并要在此儆醒不倦，为众圣徒祈求。\"",
+                quote: "用祷告行过焦虑的幽谷，借着信心与基督联合。",
+                exercise: "今天增加祷告时间，为每件事祷告后再行动。",
+                prayer: "主啊，求你让我学会不住地祷告"
+            },
+            {
+                day: 21,
+                step: "神的话语",
+                verse: "希伯来书 4:12 \"神的道是活泼的，是有功效的，比一切两刃的剑更快。\"",
+                quote: "神将自己用话语启示给我们。实际上神一直如此，透过我们生活的世界，透过圣灵。",
+                exercise: "今天读一段经文（诗篇23篇），默想它如何应用在你的焦虑上。",
+                prayer: "主啊，你的话语是我脚前的灯，路上的光"
+            },
+            {
+                day: 22,
+                step: "属灵争战",
+                verse: "以弗所书 6:12 \"因我们并不是与属血气的争战，乃是与那些执政的、掌权的、管辖这幽暗世界的，以及天空属灵气的恶魔争战。\"",
+                quote: "属灵争战的存在意味着我们生活在战场。焦虑是这个战场的一部分。",
+                exercise: "今天为属灵争战祷告：穿上全副军装，特别是信心的藤牌。",
+                prayer: "主啊，赐给我属灵的武器，让我能抵挡仇敌的攻击"
+            },
+            {
+                day: 23,
+                step: "安息与成圣",
+                verse: "出埃及记 33:14 \"耶和华说：我必亲自和你同去，使你得安息。\"",
+                quote: "安息是成圣的一部分。神使用焦虑来塑造我们，让我们学习安息。",
+                exercise: "今天为自己安排一段安息时间：什么都不做，只是与神同在。",
+                prayer: "主啊，求你赐我安息的灵，让我在你里面得享安息"
+            },
+            {
+                day: 24,
+                step: "身体与灵",
+                verse: "哥林多前书 6:19-20 \"岂不知你们的身子就是圣灵的殿吗？这圣灵是从神而来，住在你们里头的。\"",
+                quote: "我们是身体、灵性合一的神之形象。",
+                exercise: "今天照顾你的身体：好好吃饭、运动、睡觉，这是敬拜神的一部分。",
+                prayer: "主啊，谢谢你赐给我身体，愿我好好管理它"
+            },
+            {
+                day: 25,
+                step: "婚姻与支持",
+                verse: "传道书 4:9 \"两个人总比一个人好，因为二人劳碌同得美好的果效。\"",
+                quote: "夫妻一体与焦虑。你的配偶对你的怜悯和同理心，与CHRIST六步秘诀中的H相关，是一种补充。",
+                exercise: "如果已婚，与配偶分享你的焦虑，为他/她祷告；如果单身，为你的支持群体感恩。",
+                prayer: "主啊，谢谢你赐给我家人和朋友，愿我们一起彼此扶持"
+            },
+            {
+                day: 26,
+                step: "孩子般的心",
+                verse: "马太福音 18:3 \"说：我实在告诉你们，你们若不回转，变成小孩子的样式，断不得进天国。\"",
+                quote: "你也是一个孩子。神是我们父。",
+                exercise: "今天像孩子一样来到神面前：简单、诚实、相信。",
+                prayer: "主啊，愿我像孩子一样信靠你"
+            },
+            {
+                day: 27,
+                step: "盼望",
+                verse: "罗马书 15:13 \"但愿使人有盼望的神，因信将诸般的喜乐、平安充满你们的心，使你们借着圣灵的能力大有盼望。\"",
+                quote: "盼望已在。平安是神的临在。盼望同在的平安。",
+                exercise: "写下你对未来的盼望，然后为每一个盼望祷告。",
+                prayer: "主啊，求你让我满有盼望，知道你在掌管一切"
+            },
+            {
+                day: 28,
+                step: "平安",
+                verse: "约翰福音 14:27 \"我留下平安给你们，我将我的平安赐给你们。我所赐的，不像世人所赐的。\"",
+                quote: "平安不是没有焦虑，而是焦虑中有神的同在。",
+                exercise: "当焦虑来袭时，宣告：\"主啊，你赐给我平安，平安在你里面。\"",
+                prayer: "主啊，谢谢你赐给我出人意外的平安"
+            },
+            {
+                day: 29,
+                step: "被击打却不至毁灭",
+                verse: "哥林多后书 4:8-9 \"我们四面受敌，却不被困住；心里作难，却不至失望；遭逼迫，却不被丢弃；打倒了，却不至灭亡。\"",
+                quote: "被击倒却不至摧毁。神使用我们的焦虑，就像他千百次使用其他苦难一样，来建立我们的信心。",
+                exercise: "回顾这30天的操练，写下神如何在你身上工作。",
+                prayer: "主啊，谢谢你在我生命中作工，求你继续带领我"
+            },
+            {
+                day: 30,
+                step: "继续前行",
+                verse: "腓立比书 1:6 \"我深信那在你们心里动了善工的，必成全这工，直到耶稣基督的日子。\"",
+                quote: "继续学习！这是一个终身的建造旅程。每日都有未完成的散落工程，我们需要以便建造我们、与他相交。",
+                exercise: "制定你未来30天的计划：如何继续应用CHRIST六步，如何持续与神相交。",
+                prayer: "主啊，求你成全你在我心里动的善工，直到耶稣基督的日子"
+            }
+        ];
+        
+        let currentDay = 1;
+        const totalDays = daysData.length;
+        
+        // Initialize
+        function init() {
+            checkAccessDate();
+            createNavButtons();
+            createDayCards();
+            showDay(currentDay);
+        }
+
+        // Check access date - show countdown until March 1st
+        function checkAccessDate() {
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const accessDate = new Date(currentYear, 2, 1, 0, 0, 0); // March 1st 00:00:00 (month is 0-indexed, so 2 = March)
+
+            if (currentDate < accessDate) {
+                // Show countdown page
+                document.body.innerHTML = `
+                    <div class="container" style="text-align: center; padding: 50px 20px;">
+                        <h1 style="color: #667eea; margin-bottom: 30px;">🌿 幽谷与丰筵</h1>
+                        <div style="font-size: 80px; margin: 20px 0;">🔒</div>
+                        <h2 style="margin-bottom: 10px;">30天焦虑操练计划</h2>
+                        <p style="font-size: 16px; color: #666; margin-bottom: 30px;">计划将于 3月1日 开启</p>
+                        
+                        <div class="countdown-container" style="margin: 40px 0;">
+                            <div class="countdown-title" style="font-size: 18px; color: #667eea; margin-bottom: 20px;">
+                                距离开启还有
+                            </div>
+                            <div class="countdown-timer" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                                <div class="time-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; border-radius: 12px; min-width: 100px;">
+                                    <div class="time-value" id="days" style="font-size: 36px; font-weight: bold;">0</div>
+                                    <div class="time-label" style="font-size: 14px; opacity: 0.9;">天</div>
+                                </div>
+                                <div class="time-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; border-radius: 12px; min-width: 100px;">
+                                    <div class="time-value" id="hours" style="font-size: 36px; font-weight: bold;">00</div>
+                                    <div class="time-label" style="font-size: 14px; opacity: 0.9;">小时</div>
+                                </div>
+                                <div class="time-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; border-radius: 12px; min-width: 100px;">
+                                    <div class="time-value" id="minutes" style="font-size: 36px; font-weight: bold;">00</div>
+                                    <div class="time-label" style="font-size: 14px; opacity: 0.9;">分钟</div>
+                                </div>
+                                <div class="time-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 25px; border-radius: 12px; min-width: 100px;">
+                                    <div class="time-value" id="seconds" style="font-size: 36px; font-weight: bold;">00</div>
+                                    <div class="time-label" style="font-size: 14px; opacity: 0.9;">秒</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="wechat-reminder" style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 2px dashed #667eea;">
+                            <div style="font-size: 20px; margin-bottom: 15px;">📅 设置提醒</div>
+                            <p style="color: #666; margin-bottom: 20px;">在3月1日当天收到微信提醒，开始你的30天焦虑操练计划</p>
+                            <button onclick="showWechatReminder()" style="background: #07c160; color: white; border: none; padding: 15px 40px; border-radius: 25px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+                                💬 微信提醒我
+                            </button>
+                        </div>
+                        
+                        <p style="margin-top: 30px; color: #999; font-size: 14px;">敬请期待 · 让我们一起战胜焦虑</p>
+                    </div>
+                    
+                    <div id="reminderModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+                        <div style="background: white; padding: 30px; border-radius: 20px; max-width: 400px; text-align: center; margin: 20px;">
+                            <div style="font-size: 50px; margin-bottom: 15px;">✅</div>
+                            <h3 style="margin-bottom: 10px;">提醒设置成功！</h3>
+                            <p style="color: #666; margin-bottom: 20px;">我们会在3月1日当天通过微信通知您开启30天焦虑操练计划。</p>
+                            <button onclick="closeReminderModal()" style="background: #667eea; color: white; border: none; padding: 12px 30px; border-radius: 20px; font-size: 14px; cursor: pointer;">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Start countdown
+                startCountdown(accessDate);
+                
+                throw new Error('Access denied: Plan not yet available');
+            }
+        }
+        
+        // Countdown timer function
+        function startCountdown(targetDate) {
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const target = targetDate.getTime();
+                const distance = target - now;
+                
+                if (distance < 0) {
+                    // Countdown finished, reload page
+                    window.location.reload();
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Update immediately and then every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        
+        // Show wechat reminder modal
+        function showWechatReminder() {
+            document.getElementById('reminderModal').style.display = 'flex';
+            // Here you would integrate with WeChat API or backend service
+            // For now, it's a demo
+        }
+        
+        // Close reminder modal
+        function closeReminderModal() {
+            document.getElementById('reminderModal').style.display = 'none';
+        }
+        
+        function createNavButtons() {
+            const navContainer = document.getElementById('navContainer');
+            daysData.forEach(day => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn';
+                btn.textContent = day.day;
+                btn.onclick = () => showDay(day.day);
+                navContainer.appendChild(btn);
+            });
+        }
+        
+        function createDayCards() {
+            const dayCards = document.getElementById('dayCards');
+            daysData.forEach(day => {
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.id = `day-${day.day}`;
+                card.innerHTML = `
+                    <div class="day-header">
+                        <div class="day-number">${day.day}</div>
+                        <div class="day-title">
+                            <h2>第${day.day}天</h2>
+                            <span class="step-badge">${day.step}</span>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">📖 金句/经文</div>
+                        <div class="verse-box">${day.verse}</div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">💡 书摘/核心思想</div>
+                        <div class="quote-box">${day.quote}</div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">✏️ 今日操练</div>
+                        <div class="exercise-box">${day.exercise}</div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">🙏 祷告建议</div>
+                        <div class="prayer-box">${day.prayer}</div>
+                    </div>
+                `;
+                dayCards.appendChild(card);
+            });
+        }
+        
+        function showDay(day) {
+            currentDay = day;
+            
+            // Update day cards
+            document.querySelectorAll('.day-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.getElementById(`day-${day}`).classList.add('active');
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', index + 1 === day);
+            });
+            
+            // Update progress bar
+            const progress = (day / totalDays) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = day === 1;
+            document.getElementById('nextBtn').disabled = day === totalDays;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function changeDay(delta) {
+            const newDay = currentDay + delta;
+            if (newDay >= 1 && newDay <= totalDays) {
+                showDay(newDay);
+            }
+        }
+        
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>倒计时 - 幽谷与丰筵</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .title {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .lock-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .countdown-title {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .time-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            min-width: 100px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .time-value {
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .time-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .wechat-reminder {
+            margin-top: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #667eea;
+        }
+        
+        .wechat-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .wechat-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .wechat-btn {
+            background: #07c160;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(7, 193, 96, 0.3);
+        }
+        
+        .wechat-btn:hover {
+            background: #06ad56;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(7, 193, 96, 0.4);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 400px;
+            text-align: center;
+            margin: 20px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .modal-text {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🌿 幽谷与丰筵</h1>
+        <div class="lock-icon">🔒</div>
+        <h2 class="subtitle">30天焦虑操练计划</h2>
+        <p class="description">计划将于 3月1日 开启</p>
+        
+        <div class="countdown-title">
+            距离开启还有
+        </div>
+        <div class="countdown-timer">
+            <div class="time-box">
+                <div class="time-value" id="days">0</div>
+                <div class="time-label">天</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">小时</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">分钟</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">秒</div>
+            </div>
+        </div>
+        
+        <div class="wechat-reminder">
+            <div class="wechat-title">📅 设置提醒</div>
+            <p class="wechat-description">
+                在3月1日当天收到微信提醒，开始你的30天焦虑操练计划
+            </p>
+            <button class="wechat-btn" onclick="showWechatReminder()">
+                💬 微信提醒我
+            </button>
+        </div>
+        
+        <p class="footer">敬请期待 · 让我们一起战胜焦虑</p>
+    </div>
+    
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-icon">✅</div>
+            <h3 class="modal-title">提醒设置成功！</h3>
+            <p class="modal-text">
+                我们会在3月1日当天通过微信通知您开启30天焦虑操练计划。
+            </p>
+            <button class="modal-btn" onclick="closeReminderModal()">
+                确定
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Target date: March 1st, 2026
+        const currentYear = new Date().getFullYear();
+        const targetDate = new Date(currentYear, 2, 1, 0, 0, 0); // March 1st (month is 0-indexed, so 2 = March)
+        
+        function startCountdown() {
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const target = targetDate.getTime();
+                const distance = target - now;
+                
+                if (distance < 0) {
+                    // Countdown finished, redirect to main page
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Update immediately and then every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        
+        function showWechatReminder() {
+            document.getElementById('reminderModal').style.display = 'flex';
+            // Here you would integrate with WeChat API or backend service
+            console.log('WeChat reminder set up - placeholder for backend integration');
+        }
+        
+        function closeReminderModal() {
+            document.getElementById('reminderModal').style.display = 'none';
+        }
+        
+        // Start countdown on page load
+        startCountdown();
+    </script>
+</body>
+</html>
